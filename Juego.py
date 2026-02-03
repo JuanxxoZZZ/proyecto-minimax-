@@ -8,14 +8,31 @@ fila_raton = 5
 col_raton = 5
 
 turnos_gato = 0 
-limite_de_turnos = 5
+limite_de_turnos = 20
+
 
 #esto seria basicamente una lista de los obstaculos que hay en el mapa 
 lista_de_obstaculos = [(2, 2), (3, 3), (2, 3), (5, 3)]
 
-'''Hacer un ciclo while en donde calcule la posicion del gato y del raton para saber si el gato 
+def distancia_GyR (fila_gato, col_gato, fila_raton, col_raton):
+    return abs(fila_gato - fila_raton) + abs(col_gato - col_raton)
+
+
+def movimientos_validos(fila, col):
+    direcciones_validas = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+    movimientos_a_hacer= []
+
+    #
+    for (movi_fila, movi_col) in direcciones_validas:
+        nueva_fila = fila + movi_fila
+        nueva_col = col + movi_col
+        if 0 <= nueva_fila <= 5 and 0 <= nueva_col <= 5:
+            if (nueva_fila, nueva_col) not in lista_de_obstaculos:
+                
+                '''Hacer un ciclo while en donde calcule la posicion del gato y del raton para saber si el gato 
 atrapo al raton, mostrar el tablero, a los personajes, darles movimientos 
 y que funcione los obstaculos'''
+
 while fila_gato != fila_raton or col_gato != col_raton:
 
        #Hacer un tablero sencillo con solo puntitos
@@ -69,6 +86,7 @@ while fila_gato != fila_raton or col_gato != col_raton:
 
     #Esto basicamente serian los turnos del gato, y si llega a su limite, el raton gana y le ponemos break para que no siga infinitamente
      turnos_gato = turnos_gato + 1
+
     if turnos_gato == limite_de_turnos:
         print("El raton gano")
         break
@@ -76,4 +94,30 @@ while fila_gato != fila_raton or col_gato != col_raton:
     if (fila_nueva, col_nueva) == (fila_raton, col_raton):
         print("Gano el mishi")
         break
+    #esto seria los movimientos que haria el raton 
+    direcciones_raton = ("arriba", "abajo", "izquierda", "derecha")
 
+    #aca hacemos que la libreria random decida aleatoriamente en que direccion se va a mover el raton 
+    movimientos_raton = random.choice(direcciones_raton)
+
+    fila_nuevarat = fila_raton
+    col_nuevarat = col_raton
+
+    if movimientos_raton == "arriba":
+        fila_nuevarat -= 1 
+    elif movimientos_raton == "abajo":
+        fila_nuevarat += 1
+    elif movimientos_raton == "izquierda":
+        col_nuevarat -= 1 
+    elif movimientos_raton == "derecha":
+        col_nuevarat += 1 
+
+        """lo quee faltaria seria hacer que el raton se mueva y que respete todo como el gato"""
+        """Básicamente lo que tendría que hacer con la librería random seria, crear una variable que en esa variable guarde los movimientos posibles 
+         que va a hacer el ratón, luego hacemos que random.choice() elija los movimientos, luego "configuramos" los movimientos de arriba, abajo, etc etc"""    
+
+    if 0 <= fila_nuevarat <= 5 and 0 <= col_nuevarat <= 5:
+
+            if (fila_nuevarat, col_nuevarat) not in lista_de_obstaculos:
+                fila_raton = fila_nuevarat
+                col_raton = col_nuevarat
