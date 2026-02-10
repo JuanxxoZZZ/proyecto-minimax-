@@ -47,12 +47,13 @@ def minimax(fila_catmini, col_catmini, fila_ratmini, col_ratmini, turno, profund
         return mejor_valor
     elif turno == "gato":
         mejor_valor = 999
-        movimientos_gatos = movimientos_validos(fila_catmini, col_catmini)
-        for (nueva_fila, nueva col) in movimientos_gatos:
-            valor = minimax (fila_catmini, col_catmini, nueva_fila, nueva_col, "raton", profundidad - 1)
+        movimiento_mishi = movimientos_validos(fila_catmini, col_catmini)
+        for (nueva_fila, nueva_col) in movimiento_mishi:
+            valor = minimax (nueva_fila, nueva_col, fila_ratmini, col_ratmini, "raton", profundidad - 1)
             if valor < mejor_valor:
                 mejor_valor = valor
         return mejor_valor
+    
 '''Hacer un ciclo while en donde cNalcule la posicion del gato y del raton para saber si el gato 
     atrapo al raton, mostrar el tablero, a los personajes, darles movimientos 
     y que funcione los obstaculos'''
@@ -125,9 +126,9 @@ while fila_gato != fila_raton or col_gato != col_raton:
     mejor_distancia = 0 
 
     for (nueva_fila, nueva_col) in raton_movimientos:
-        distancia_actual = distancia_GyR(fila_gato, col_gato, nueva_fila, nueva_col)
-        if distancia_actual > mejor_distancia:
-            mejor_distancia = distancia_actual
+        valor = minimax(fila_gato, col_gato, nueva_fila, nueva_col, "gato", 2)
+        if valor > mejor_distancia:
+            mejor_distancia = valor
             mejor_movimiento = [nueva_fila, nueva_col]
     fila_raton = nueva_fila
     col_raton = nueva_col 
