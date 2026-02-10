@@ -110,7 +110,7 @@ while fila_gato != fila_raton or col_gato != col_raton:
         print("Estas chocando un obstaculo")
 
         #Esto basicamente serian los turno del gato, y si llega a su limite, el raton gana y le ponemos break para que no siga infinitamente
-        turnos_gato = turnos_gato + 1
+    turnos_gato = turnos_gato + 1
     
     if turnos_gato == limite_de_turnos:
         print("El raton gano")
