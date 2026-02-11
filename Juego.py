@@ -31,20 +31,22 @@ def movimientos_validos(fila, col):
                 
     return movimientos_a_hacer
 
-#posible error de 
+# 
 def minimax(fila_catmini, col_catmini, fila_ratmini, col_ratmini, turno, profundidad):
     if profundidad == 0:
         return distancia_GyR (fila_catmini, col_catmini, fila_ratmini, col_ratmini)
     
-
+    #el raton es max (porque busca maximizar la distancia)
     if turno == "raton":
         mejor_valor = -999
         movimientos_raton = movimientos_validos(fila_ratmini, col_ratmini)
+        #este for 
         for (nueva_fila, nueva_col) in movimientos_raton:
             valor = minimax(fila_catmini, col_catmini, nueva_fila, nueva_col, "gato", profundidad - 1)
             if valor > mejor_valor:
                 mejor_valor = valor 
         return mejor_valor
+    #eL gato es min (Busca minimar la distancia)
     elif turno == "gato":
         mejor_valor = 999
         movimiento_mishi = movimientos_validos(fila_catmini, col_catmini)
@@ -109,21 +111,8 @@ while fila_gato != fila_raton or col_gato != col_raton:
         else:
             print("Estas chocando un obstaculo")
 
-        #Esto basicamente serian los turno del gato, y si llega a su limite, el raton gana y le ponemos break para que no siga infinitamente
-    turnos_gato = turnos_gato + 1
-   
-    #Lo que hace este aif es, calcular si el gato esta encima del raton y avisa si gana el gato y le ponemos break para que no siga infinitamente
-    if (fila_gato, col_gato) == (fila_raton, col_raton):
-        print("Gano el mishi")
-        break
-    
-    if turnos_gato >= limite_de_turnos:
-        print("El raton gano")
-        break
-
-
     raton_movimientos = movimientos_validos(fila_raton, col_raton)
-    
+
     mejor_movimiento = None
     mejor_distancia = -999
 
@@ -137,6 +126,17 @@ while fila_gato != fila_raton or col_gato != col_raton:
         fila_raton = mejor_movimiento[0]
         col_raton = mejor_movimiento[1]
 
+           #Esto basicamente serian los turno del gato, y si llega a su limite, el raton gana y le ponemos break para que no siga infinitamente
+    turnos_gato = turnos_gato + 1
+   
+    #Lo que hace este aif es, calcular si el gato esta encima del raton y avisa si gana el gato y le ponemos break para que no siga infinitamente
+    if (fila_gato, col_gato) == (fila_raton, col_raton):
+        print("Gano el mishi")
+        break
+    
+    if turnos_gato == limite_de_turnos:
+        print("El raton gano")
+        break
 """lo quee faltaria seria hacer que el raton se mueva y que respete todo como el gato"""
 """Básicamente lo que tendría que hacer con la librería random seria, crear una variable que en esa variable guarde los movimientos posibles 
  que va a hacer el ratón, luego hacemos que random.choice() elija los movimientos, luego "configuramos" los movimientos de arriba, abajo, etc etc"""
