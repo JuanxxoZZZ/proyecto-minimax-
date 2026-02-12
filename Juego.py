@@ -25,14 +25,19 @@ def movimientos_validos(fila, col):
     for (movi_fila, movi_col) in direcciones_validas:
         nueva_fila = fila + movi_fila
         nueva_col = col + movi_col
+        #Lo que pasa aca es que calcula los nuevos movimientos del gato para que no se salga del tablero y le devuelva a la posicion anterior
         if 0 <= nueva_fila <= 5 and 0 <= nueva_col <= 5:
+            #este if seria para que respete los obstaculos y que le devuelva a la misma posicion 
             if (nueva_fila, nueva_col) not in lista_de_obstaculos:
                 movimientos_a_hacer.append((nueva_fila, nueva_col))
                 
     return movimientos_a_hacer
 
-# 
+#-----------------------------------------------------------------------------------------------------
+# THE MINIMAX
+#Le dariamos estos parametros, fila y col del gato, fila y col del raton, turnos y la profundidad
 def minimax(fila_catmini, col_catmini, fila_ratmini, col_ratmini, turno, profundidad):
+    #esto seria el caso base, que si no hay profundidad, el gato y el raton se quedan en sus posiciones
     if profundidad == 0:
         return distancia_GyR (fila_catmini, col_catmini, fila_ratmini, col_ratmini)
     
@@ -40,9 +45,10 @@ def minimax(fila_catmini, col_catmini, fila_ratmini, col_ratmini, turno, profund
     if turno == "raton":
         mejor_valor = -999
         movimientos_raton = movimientos_validos(fila_ratmini, col_ratmini)
-        #este for 
+        #Lo que este for estaria calculando serian todos los movimientos del raton, cuando ya es el turno del gato y la profundidad  
         for (nueva_fila, nueva_col) in movimientos_raton:
             valor = minimax(fila_catmini, col_catmini, nueva_fila, nueva_col, "gato", profundidad - 1)
+            #esto basciamente devolveria el mejor valor para el raton y que vaya "mejorando" la puntuacion 
             if valor > mejor_valor:
                 mejor_valor = valor 
         return mejor_valor
@@ -50,12 +56,14 @@ def minimax(fila_catmini, col_catmini, fila_ratmini, col_ratmini, turno, profund
     elif turno == "gato":
         mejor_valor = 999
         movimiento_mishi = movimientos_validos(fila_catmini, col_catmini)
+        #lo mismo que con el raton y estaria calculando en movimiento mishi los movimientos que son "validos" para luego calcular cuando es el turno de raton y la profundidad 
         for (nueva_fila, nueva_col) in movimiento_mishi:
             valor = minimax (nueva_fila, nueva_col, fila_ratmini, col_ratmini, "raton", profundidad - 1)
+            #devolver el mejor valor para el gatoy que "mejor" la puntucion 
             if valor < mejor_valor:
                 mejor_valor = valor
         return mejor_valor
-    
+#-----------------------------------------------------------------------------------------------------
 '''Hacer un ciclo while en donde cNalcule la posicion del gato y del raton para saber si el gato 
     atrapo al raton, mostrar el tablero, a los personajes, darles movimientos 
     y que funcione los obstaculos'''
@@ -66,8 +74,8 @@ while fila_gato != fila_raton or col_gato != col_raton:
     tablero = [['.', '.', '.', '.', '.', '.'] for _ in range(6)]
 
     #Lo que simplemente hace esto es ubicar el emoji en el tablero y le asignamos la fila y la columna para ver en todo momento  
-    tablero[fila_gato][col_gato] = "🐱"
-    tablero[fila_raton][col_raton] = "🐭"
+    tablero[fila_gato][col_gato] = "G"
+    tablero[fila_raton][col_raton] = "R"
 
     #Esto lo que hace es, como nosotros le dimos una lista de obstaculos con filas y columnas
     #lo que hace es poner visualmente los obstaculos 
@@ -95,22 +103,22 @@ while fila_gato != fila_raton or col_gato != col_raton:
     else:
         print("El movimiento no es valido")
         continue
-
+     
+    '''Que la fila nueva sea mayor o igual a 0 Y menor que 5 (porque tu tablero tiene 5 filas: 0, 1, 2, 3, 4, 5)
+       Que la columna nueva sea mayor o igual a 0 Y menor que 5''' 
+    
         #Lo que tendria que hacer este if, seria calcular basicamente si la posicion del gato
         #este dentro del tablero para poder asi moverse chill de cojones
-         
-    '''Que la fila nueva sea mayor o igual a 0 Y menor que 5 (porque tu tablero tiene 5 filas: 0, 1, 2, 3, 4, 5)
-       Que la columna nueva sea mayor o igual a 0 Y menor que 5'''
 
     if 0 <= fila_nueva <= 5 and 0 <= col_nueva <= 5:
 
-        #Esto hace que el gato respete los obstaculos y le alerta de paso si puede pasar o no   
+        #Hacer que el gato respete los obstaculos y le alerta de paso si puede pasar o no   
         if (fila_nueva, col_nueva) not in lista_de_obstaculos:
             fila_gato = fila_nueva
             col_gato = col_nueva
         else:
             print("Estas chocando un obstaculo")
-
+    #llamamos a los movimientos validos para usarlo luego 
     raton_movimientos = movimientos_validos(fila_raton, col_raton)
 
     mejor_movimiento = None
