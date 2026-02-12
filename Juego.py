@@ -22,15 +22,16 @@ def movimientos_validos(fila, col):
     direcciones_validas = [(-1, 0), (1, 0), (0, 1), (0, -1)]
     movimientos_a_hacer = []
 
+    #lo que hace este for en grandes rasgos es ver si las direcciones son correctas y con eso verificamos si el raton no sale del tablero y respete los obstaculos 
     for (movi_fila, movi_col) in direcciones_validas:
         nueva_fila = fila + movi_fila
         nueva_col = col + movi_col
-        #Lo que pasa aca es que calcula los nuevos movimientos del gato para que no se salga del tablero y le devuelva a la posicion anterior
+        #Lo que pasa aca es que calcula los nuevos movimientos del raton para que no se salga del tablero
         if 0 <= nueva_fila <= 5 and 0 <= nueva_col <= 5:
-            #este if seria para que respete los obstaculos y que le devuelva a la misma posicion 
+            #este if seria para que respete los obstaculos y que le devuelva a la misma posicion, lo mismo que el gato 
             if (nueva_fila, nueva_col) not in lista_de_obstaculos:
                 movimientos_a_hacer.append((nueva_fila, nueva_col))
-                
+
     return movimientos_a_hacer
 
 #-----------------------------------------------------------------------------------------------------
@@ -110,6 +111,7 @@ while fila_gato != fila_raton or col_gato != col_raton:
         #Lo que tendria que hacer este if, seria calcular basicamente si la posicion del gato
         #este dentro del tablero para poder asi moverse chill de cojones
 
+        #Esto seria el del gato, que respeta el no salir del tablero 
     if 0 <= fila_nueva <= 5 and 0 <= col_nueva <= 5:
 
         #Hacer que el gato respete los obstaculos y le alerta de paso si puede pasar o no   
@@ -124,12 +126,15 @@ while fila_gato != fila_raton or col_gato != col_raton:
     mejor_movimiento = None
     mejor_distancia = -999
 
+    #este for usariamos las posiciones para verificar si los movimientos son validos y que respeten
     for (nueva_fila, nueva_col) in raton_movimientos:
+        #a valor le hacemos recursividad con minimax, y le damos fila y col del gato, las nuevas posiciones validas, el turno del gato, y la profundidad
         valor = minimax(fila_gato, col_gato, nueva_fila, nueva_col, "gato", 3)
+        #despues este solo actualiza el mejor valor si es que hay un mejor valor con las posiciones
         if valor > mejor_distancia:
             mejor_distancia = valor
             mejor_movimiento = [nueva_fila, nueva_col]
-    
+    #actualizamos la mejor posicion del raton 
     if mejor_movimiento:
         fila_raton = mejor_movimiento[0]
         col_raton = mejor_movimiento[1]
@@ -145,6 +150,3 @@ while fila_gato != fila_raton or col_gato != col_raton:
     if turnos_gato == limite_de_turnos:
         print("El raton gano")
         break
-"""lo quee faltaria seria hacer que el raton se mueva y que respete todo como el gato"""
-"""Básicamente lo que tendría que hacer con la librería random seria, crear una variable que en esa variable guarde los movimientos posibles 
- que va a hacer el ratón, luego hacemos que random.choice() elija los movimientos, luego "configuramos" los movimientos de arriba, abajo, etc etc"""
